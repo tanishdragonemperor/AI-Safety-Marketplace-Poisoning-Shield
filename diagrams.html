@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace Poisoning Shield - Architecture Diagrams</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: #f7fafc; 
+            padding: 40px;
+        }
+        h1 { 
+            text-align: center; 
+            color: #1a365d; 
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+        }
+        h2 { 
+            color: #2d3748; 
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .diagram-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+        .caption {
+            text-align: center;
+            color: #718096;
+            font-style: italic;
+            margin-top: 15px;
+        }
+        .instructions {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .instructions h3 { color: #2d3748; margin-bottom: 10px; }
+        .instructions p { color: #4a5568; }
+        @media print {
+            body { background: white; padding: 20px; }
+            .diagram-container { box-shadow: none; border: 1px solid #e2e8f0; }
+            .instructions { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🛡️ Marketplace Poisoning Shield</h1>
+    <p style="text-align: center; color: #718096; margin-bottom: 40px;">Architecture Diagrams for Final Report</p>
+
+
+    <!-- DIAGRAM 1: System Architecture -->
+    <h2>Figure 1: System Architecture Overview</h2>
+    <div class="diagram-container">
+        <div class="mermaid">
+flowchart TB
+    subgraph Input["📦 INPUT LAYER"]
+        DG["🗄️ Dataset Generator\n100 Products | 5 Categories"]
+    end
+
+    subgraph RedTeam["⚔️ RED TEAM - Attack Simulator"]
+        direction LR
+        A1["👻 Hidden\nCharacters"]
+        A2["📝 Keyword\nStuffing"]
+        A3["🔤 Homoglyph\nAttack"]
+        A4["⭐ Fake\nReviews"]
+        A5["🎭 Adversarial\nParaphrase"]
+        A6["🗄️ Metadata\nPoisoning"]
+    end
+
+    subgraph BlueTeam["🛡️ BLUE TEAM - Defense Module"]
+        direction LR
+        D1["👁️ Unicode\nScanner"]
+        D2["🔍 Keyword\nAnalyzer"]
+        D3["🔤 Homoglyph\nDetector"]
+        D4["⭐ Review\nValidator"]
+        D5["📋 Metadata\nInspector"]
+        D6["📊 Statistical\nAnalyzer"]
+    end
+
+    subgraph Search["🔍 SEARCH PIPELINE"]
+        EMB["📐 TF-IDF\nEmbeddings"]
+        IDX["📁 Dual\nIndex"]
+        SIM["🎯 Similarity\nSearch"]
+    end
+
+    subgraph Eval["📊 EVALUATION"]
+        METRICS["Precision: 95.8%\nRecall: 92.0%\nF1: 93.9%"]
+    end
+
+    subgraph UI["🖥️ PRESENTATION"]
+        API["🔌 Flask API"]
+        WEB["🌐 React UI"]
+    end
+
+    DG -->|"Clean Data"| RedTeam
+    DG -->|"Clean Data"| BlueTeam
+    RedTeam -->|"25% Poisoned"| BlueTeam
+    BlueTeam -->|"Threat Scores"| Search
+    EMB --> IDX --> SIM
+    Search --> Eval
+    Eval --> API --> WEB
+
+    style RedTeam fill:#fed7d7,stroke:#c53030
+    style BlueTeam fill:#bee3f8,stroke:#2b6cb0
+    style Search fill:#e9d8fd,stroke:#6b46c1
+    style Eval fill:#c6f6d5,stroke:#276749
+    style UI fill:#feebc8,stroke:#c05621
+        </div>
+        <p class="caption">Figure 1: Complete system architecture showing data flow from generation through attack, defense, search, and evaluation</p>
+    </div>
+
+    <!-- DIAGRAM 2: Defense Pipeline -->
+    <h2>Figure 2: Defense Pipeline (6 Layers)</h2>
+    <div class="diagram-container">
+        <div class="mermaid">
+flowchart LR
+    IN["📥 INPUT\nProduct"] --> L1["👁️ Layer 1\nUnicode Scanner"]
+    L1 --> L2["🔍 Layer 2\nKeyword Analyzer"]
+    L2 --> L3["🔤 Layer 3\nHomoglyph Detector"]
+    L3 --> L4["⭐ Layer 4\nReview Validator"]
+    L4 --> L5["📋 Layer 5\nMetadata Inspector"]
+    L5 --> L6["📊 Layer 6\nStatistical Analyzer"]
+    L6 --> AGG["🎯 Score\nAggregator"]
+    AGG --> DEC{{"Threat\n> 0.5?"}}
+    DEC -->|"Yes"| FLAG["🚨 FLAGGED\nSuspicious"]
+    DEC -->|"No"| SAFE["✅ SAFE\nClean"]
+
+    style L1 fill:#bee3f8,stroke:#2b6cb0
+    style L2 fill:#bee3f8,stroke:#2b6cb0
+    style L3 fill:#bee3f8,stroke:#2b6cb0
+    style L4 fill:#bee3f8,stroke:#2b6cb0
+    style L5 fill:#bee3f8,stroke:#2b6cb0
+    style L6 fill:#bee3f8,stroke:#2b6cb0
+    style AGG fill:#e9d8fd,stroke:#6b46c1
+    style FLAG fill:#fed7d7,stroke:#c53030
+    style SAFE fill:#c6f6d5,stroke:#276749
+        </div>
+        <p class="caption">Figure 2: Six-layer defense pipeline with weighted score aggregation and threat classification</p>
+    </div>
+
+    <!-- DIAGRAM 3: Attack Types -->
+    <h2>Figure 3: Attack Types (Red Team)</h2>
+    <div class="diagram-container">
+        <div class="mermaid">
+flowchart TB
+    subgraph TextAttacks["📝 TEXT-BASED ATTACKS"]
+        A1["👻 HIDDEN CHARACTERS\n─────────────────\n• Zero-width Unicode\n• Invisible to humans\n• Affects AI tokenization\n• +3-10 hidden bytes"]
+        A2["📝 KEYWORD STUFFING\n─────────────────\n• SEO spam injection\n• BEST, TOP RATED, PREMIUM\n• Manipulates search ranking\n• Description modification"]
+        A3["🔤 HOMOGLYPH ATTACK\n─────────────────\n• Lookalike characters\n• Cyrillic/Greek substitution\n• Bypasses brand filters\n• Visually identical"]
+    end
+
+    subgraph SemanticAttacks["🧠 SEMANTIC ATTACKS"]
+        A4["⭐ FAKE REVIEWS\n─────────────────\n• Injected 5-star reviews\n• Generic positive language\n• Rating boost: +1.2 stars\n• +5 fake reviews added"]
+        A5["🎭 ADVERSARIAL PARAPHRASE\n─────────────────\n• False brand associations\n• Misleading quality claims\n• 'Better than Apple!'\n• Semantic manipulation"]
+    end
+
+    subgraph HiddenAttacks["🔒 HIDDEN ATTACKS"]
+        A6["🗄️ METADATA POISONING\n─────────────────\n• Fake view counts\n• Hidden promotional text\n• Manipulated timestamps\n• Invisible to users"]
+    end
+
+    style A1 fill:#fed7d7,stroke:#c53030
+    style A2 fill:#feebc8,stroke:#c05621
+    style A3 fill:#e9d8fd,stroke:#6b46c1
+    style A4 fill:#fbb6ce,stroke:#b83280
+    style A5 fill:#c6f6d5,stroke:#276749
+    style A6 fill:#bee3f8,stroke:#2b6cb0
+        </div>
+        <p class="caption">Figure 3: Six attack types categorized by attack vector - text-based, semantic, and hidden manipulation</p>
+    </div>
+
+    <!-- DIAGRAM 4: Data Flow -->
+    <h2>Figure 4: Data Flow Architecture</h2>
+    <div class="diagram-container">
+        <div class="mermaid">
+flowchart TD
+    subgraph Gen["1️⃣ GENERATION"]
+        GEN["🗄️ Dataset Generator"]
+        CLEAN["✅ 75 Clean Products"]
+        POISON["☠️ 25 Poisoned Products"]
+        GEN --> CLEAN
+        GEN --> POISON
+    end
+
+    subgraph Process["2️⃣ DEFENSE ANALYSIS"]
+        DEF["🛡️ Defense Module"]
+        SCORES["📊 Threat Scores"]
+        CLEAN --> DEF
+        POISON --> DEF
+        DEF --> SCORES
+    end
+
+    subgraph Index["3️⃣ SEARCH INDEXING"]
+        RAW["📁 Baseline Index\n(Raw Products)"]
+        SAN["📁 Defended Index\n(Sanitized Products)"]
+        SCORES --> RAW
+        SCORES --> SAN
+    end
+
+    subgraph Search["4️⃣ SEARCH COMPARISON"]
+        QUERY["🔍 Search Query"]
+        BASE["❌ Baseline Results\n(Vulnerable)"]
+        DEFEND["✅ Defended Results\n(Protected)"]
+        QUERY --> RAW --> BASE
+        QUERY --> SAN --> DEFEND
+    end
+
+    subgraph Impact["5️⃣ IMPACT ANALYSIS"]
+        COMP["📊 Side-by-Side\nComparison"]
+        RESULT["📈 Defense blocks\npoisoned products\nfrom top results"]
+        BASE --> COMP
+        DEFEND --> COMP
+        COMP --> RESULT
+    end
+
+    style CLEAN fill:#c6f6d5,stroke:#276749
+    style POISON fill:#fed7d7,stroke:#c53030
+    style BASE fill:#fed7d7,stroke:#c53030
+    style DEFEND fill:#c6f6d5,stroke:#276749
+    style RESULT fill:#bee3f8,stroke:#2b6cb0
+        </div>
+        <p class="caption">Figure 4: End-to-end data flow from generation through defense analysis to search impact comparison</p>
+    </div>
+
+    <!-- DIAGRAM 5: Evaluation Results -->
+    <h2>Figure 5: Evaluation Metrics</h2>
+    <div class="diagram-container">
+        <div class="mermaid">
+flowchart TB
+    subgraph Matrix["📊 CONFUSION MATRIX"]
+        direction LR
+        subgraph Predicted["Predicted"]
+            subgraph Pos["Positive"]
+                TP["✅ TP: 23\nCorrectly Detected"]
+                FP["⚠️ FP: 1\nFalse Alarm"]
+            end
+            subgraph Neg["Negative"]
+                FN["❌ FN: 2\nMissed Attack"]
+                TN["✅ TN: 74\nCorrectly Allowed"]
+            end
+        end
+    end
+
+    subgraph Metrics["📈 PERFORMANCE METRICS"]
+        P["🎯 PRECISION\n95.8%\nTP / (TP + FP)"]
+        R["🎯 RECALL\n92.0%\nTP / (TP + FN)"]
+        F1["⭐ F1 SCORE\n93.9%\nHarmonic Mean"]
+    end
+
+    TP --> P
+    FP --> P
+    TP --> R
+    FN --> R
+    P --> F1
+    R --> F1
+
+    style TP fill:#c6f6d5,stroke:#276749
+    style TN fill:#c6f6d5,stroke:#276749
+    style FP fill:#feebc8,stroke:#c05621
+    style FN fill:#fed7d7,stroke:#c53030
+    style F1 fill:#bee3f8,stroke:#2b6cb0
+        </div>
+        <p class="caption">Figure 5: Evaluation results showing confusion matrix and derived performance metrics</p>
+    </div>
+
+    <!-- DIAGRAM 6: Red vs Blue Team -->
+    <h2>Figure 6: Red Team vs Blue Team</h2>
+    <div class="diagram-container">
+        <div class="mermaid">
+flowchart LR
+    subgraph Red["⚔️ RED TEAM\nAttackers"]
+        R1["🎯 Goal: Evade Detection"]
+        R2["🔧 6 Attack Types"]
+        R3["👻 Silent Manipulation"]
+        R1 --> R2 --> R3
+    end
+
+    subgraph Product["📦 PRODUCT DATA"]
+        T["Title"]
+        D["Description"]
+        V["Reviews"]
+        M["Metadata"]
+    end
+
+    subgraph Blue["🛡️ BLUE TEAM\nDefenders"]
+        B1["🎯 Goal: Detect Attacks"]
+        B2["🔧 6 Defense Layers"]
+        B3["📊 Threat Scoring"]
+        B1 --> B2 --> B3
+    end
+
+    Red ==>|"☠️ POISON"| Product
+    Product ==>|"🔍 ANALYZE"| Blue
+
+    style Red fill:#fed7d7,stroke:#c53030
+    style Blue fill:#bee3f8,stroke:#2b6cb0
+    style Product fill:#feebc8,stroke:#c05621
+        </div>
+        <p class="caption">Figure 6: Adversarial relationship between Red Team (attackers) and Blue Team (defenders)</p>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>
